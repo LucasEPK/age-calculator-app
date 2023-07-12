@@ -6,34 +6,47 @@
   <title>Age calculator app</title>
 
   <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+
+  <!--CSS reset sheet-->
+  <link rel="stylesheet" href="reset.css">
+  <!--CSS style sheet-->
+  <link rel="stylesheet" href="style.css">
   
 </head>
 <body>
 
   <main>
-    <section>
-      <form>
-        <label for="day">
-          Day
-          <input type="number" name="date" id="day" placeholder="DD">
-        </label>
+    <section class="container">
+      <form class="form_container">
 
-        <label for="month">
-          Month
-          <input type="number" name="date" id="month" placeholder="MM">
-        </label>
+        <div class="label_container">
+          <label class="label_items day" for="day">
+            <span class="calendar_txt">DAY</span>
+            <input class="label_input" type="number" name="date" id="day" placeholder="DD">
+          </label>
+  
+          <label class="label_items" for="month">
+            <span class="calendar_txt">MONTH</span>
+            <input class="label_input" type="number" name="date" id="month" placeholder="MM">
+          </label>
+  
+          <label class="label_items year" for="year">
+            <span class="calendar_txt">YEAR</span>
+            <input class="label_input" type="number" name="date" id="year" placeholder="YYYY">
+          </label>
+        </div>
 
-        <label for="year">
-          Year
-          <input type="number" name="date" id="year" placeholder="YYYY">
-        </label>
-
-        <input type="image" src="assets/images/icon-arrow.svg" alt="arrow icon" onclick="date_validation(document.querySelector('#day'), document.querySelector('#month'), document.querySelector('#year'))">
+        <div class="divider">
+          <div class="line"></div>
+          <input class="arrow_icon" type="image" src="assets/images/icon-arrow.svg" alt="arrow icon" onclick="date_validation(document.querySelector('#day'), document.querySelector('#month'), document.querySelector('#year'))">
+        </div>
       </form>
 
-      <p><span class="js-age-years 2-dashes">--</span> years</p>
-      <p><span class="js-age-months 2-dashes">--</span> months</p>
-      <p><span class="js-age-days 2-dashes">--</span> days</p>
+      <div>
+        <p class="calendar_txt_big"><span class="js-age-years dashes">--</span> years</p>
+        <p class="calendar_txt_big"><span class="js-age-months dashes">--</span> months</p>
+        <p class="calendar_txt_big"><span class="js-age-days dashes">--</span> days</p>
+      </div>
     </section>
   </main>
   
