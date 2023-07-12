@@ -45,7 +45,10 @@ function date_validation(day,month,year) {
         let valid_day = false;
         let valid_date = false;
         
-        if (year.value >= 0 && year.value < 2023) {
+        let current_date = new Date();
+        let current_year = current_date.getFullYear();
+
+        if (year.value >= 0 && year.value < current_year) { 
             console.log('valid year '+year.value);
             valid_year = true;
         } else {
@@ -86,7 +89,7 @@ function date_validation(day,month,year) {
                         if (day.value <= 29) {
                             valid_date = true;
                         }
-                    }else { //not a leap year
+                    } else { //not a leap year
                         console.log('not a leap year');
                         if (day.value <= 28) {
                             valid_date = true;
@@ -176,7 +179,50 @@ function calculate_age(day,month,year) { //this functions receives valid day mon
     console.log('age_months:'+age_months);
     console.log('age_days:'+age_days);
 
-    document.querySelector('.js-age-years').innerHTML = age_years;
-    document.querySelector('.js-age-months').innerHTML = age_months;
-    document.querySelector('.js-age-days').innerHTML = age_days;
+    print_to_html(age_years, age_months, age_days)
 }
+
+function print_to_html(years, months, days) {
+    //here we take the age as parameters and output it to the html with an animation 
+
+    //this objects and the array are created to make code more compact
+    let years_obj = {
+        selector: ".js-age-years",
+        value: years
+    };
+
+    let months_obj = {
+        selector: ".js-age-months",
+        value: months
+    }
+    
+    let days_obj = {
+        selector: ".js-age-days",
+        value: days
+    }
+    let ages = [years_obj, months_obj, days_obj];
+
+    let interval = 1000;
+
+    ages.forEach(age => {
+        //for each age parameter (years, months,days) we display the numbers going up in an animation till it reaches the proper number using setinterval function
+
+        let i = 0;
+        let duration = interval/age.value; //this makes the number complete in the interval time
+
+        console.log(duration);
+
+        let counter = setInterval(() => {
+            i += 1;
+            
+            document.querySelector(age.selector).textContent = i; //textContent is similar to innerHtml
+    
+            if (i == age.value) {
+                clearInterval(counter);
+            }
+        }, duration);
+    });
+
+
+}
+    
