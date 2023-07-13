@@ -10,6 +10,30 @@ function date_validation(day,month,year) {
     */
     event.preventDefault(); //this makes the page not refresh
 
+    //this resets the numbers in case there's an animation going on
+    let timeout = 10; //this timeout is necessary to wait for the animation to realize it has to stop (setinterval)
+    setTimeout(() => {
+        document.querySelector(".js-age-years").textContent = "--";
+        document.querySelector(".js-age-months").textContent = "--";
+        document.querySelector(".js-age-days").textContent = "--";
+    }, timeout);
+    //this resets the error messages
+    document.querySelector(".empty-day").style.display = "none";
+    document.querySelector(".label_input-day").style.border = "1px solid hsl(0, 0%, 86%)";
+    document.querySelector(".calendar_txt-day").style.color = "hsl(0, 1%, 44%)";
+    document.querySelector(".empty-month").style.display = "none";
+    document.querySelector(".label_input-month").style.border = "1px solid hsl(0, 0%, 86%)";
+    document.querySelector(".calendar_txt-month").style.color = "hsl(0, 1%, 44%)";
+    document.querySelector(".empty-year").style.display = "none";
+    document.querySelector(".label_input-year").style.border = "1px solid hsl(0, 0%, 86%)";
+    document.querySelector(".calendar_txt-year").style.color = "hsl(0, 1%, 44%)";
+    
+    document.querySelector(".invalid-year").style.display = "none";
+    document.querySelector(".invalid-month").style.display = "none";
+    document.querySelector(".invalid-day").style.display = "none";
+    document.querySelector(".invalid-date").style.display = "none";
+
+
     let empty_year = false;
     let empty_month = false;
     let empty_day = false;
@@ -28,17 +52,26 @@ function date_validation(day,month,year) {
 
         if (empty_day) {
             console.error('the day field is empty');
+            document.querySelector(".empty-day").style.display = "block";
+            document.querySelector(".label_input-day").style.border = "1px solid hsl(0, 100%, 67%)";
+            document.querySelector(".calendar_txt-day").style.color = "hsl(0, 100%, 67%)";
         }
         if (empty_month) {
             console.error('the month field is empty');
+            document.querySelector(".empty-month").style.display = "block";
+            document.querySelector(".label_input-month").style.border = "1px solid hsl(0, 100%, 67%)";
+            document.querySelector(".calendar_txt-month").style.color = "hsl(0, 100%, 67%)";
         }
         if (empty_year) {
             console.error('the year field is empty');
+            document.querySelector(".empty-year").style.display = "block";
+            document.querySelector(".label_input-year").style.border = "1px solid hsl(0, 100%, 67%)";
+            document.querySelector(".calendar_txt-year").style.color = "hsl(0, 100%, 67%)";
         }
 
     } else {
         //no empty fields
-        
+
         //this boolean variables are for checking the validity of the date
         let valid_year = false;
         let valid_month = false;
@@ -54,6 +87,9 @@ function date_validation(day,month,year) {
         } else {
             //error year in the future
             console.error('year in the future');
+            document.querySelector(".invalid-year").style.display = "block";
+            document.querySelector(".label_input-year").style.border = "1px solid hsl(0, 100%, 67%)";
+            document.querySelector(".calendar_txt-year").style.color = "hsl(0, 100%, 67%)";
         }
     
         if (month.value >= 1 && month.value <= 12) {
@@ -62,6 +98,9 @@ function date_validation(day,month,year) {
         } else {
             //error invalid month
             console.error('invalid month');
+            document.querySelector(".invalid-month").style.display = "block";
+            document.querySelector(".label_input-month").style.border = "1px solid hsl(0, 100%, 67%)";
+            document.querySelector(".calendar_txt-month").style.color = "hsl(0, 100%, 67%)";
         }
     
         if (day.value >= 1 && day.value <= 31) {
@@ -70,6 +109,9 @@ function date_validation(day,month,year) {
         } else {
             //error invalid day
             console.error('invalid day');
+            document.querySelector(".invalid-day").style.display = "block";
+            document.querySelector(".label_input-day").style.border = "1px solid hsl(0, 100%, 67%)";
+            document.querySelector(".calendar_txt-day").style.color = "hsl(0, 100%, 67%)";
         }
     
         if (valid_year && valid_month && valid_day) {
@@ -118,17 +160,27 @@ function date_validation(day,month,year) {
                 }
     
             }
+
+
+            if (valid_date) {
+                //if the date is valid we calculate the age
+                console.log('valid date');
+            
+                calculate_age(day,month,year)
+            } else {
+                //invalid date
+                console.error('invalid date');
+    
+                document.querySelector(".invalid-date").style.display = "block";
+                document.querySelector(".label_input-day").style.border = "1px solid hsl(0, 100%, 67%)";
+                document.querySelector(".calendar_txt-day").style.color = "hsl(0, 100%, 67%)";
+                document.querySelector(".label_input-month").style.border = "1px solid hsl(0, 100%, 67%)";
+                document.querySelector(".calendar_txt-month").style.color = "hsl(0, 100%, 67%)";
+                document.querySelector(".label_input-year").style.border = "1px solid hsl(0, 100%, 67%)";
+                document.querySelector(".calendar_txt-year").style.color = "hsl(0, 100%, 67%)";
+            }
         }
     
-        if (valid_date) {
-            //if the date is valid we calculate the age
-            console.log('valid date');
-        
-            calculate_age(day,month,year)
-        } else {
-            //invalid date
-            console.error('invalid date');
-        }
 
     }
 
@@ -161,7 +213,7 @@ function calculate_age(day,month,year) { //this functions receives valid day mon
     if (birthday_passed){
         //if the birthday passed already then we subtract
         console.log('birthday passed');
-
+        
         age_years = current_year - year.value;
         age_months = current_month - month.value;
         age_days = current_day - day.value;
@@ -212,12 +264,18 @@ function print_to_html(years, months, days) {
 
         console.log(duration);
 
+        let counter_reset = false;
+
         let counter = setInterval(() => {
+            
+            document.querySelector(".arrow_icon").addEventListener("click", function() {//this is necessary to stop the animation once the submit button has been pressed
+                counter_reset = true;
+            })
             i += 1;
             
             document.querySelector(age.selector).textContent = i; //textContent is similar to innerHtml
     
-            if (i == age.value) {
+            if (i == age.value || counter_reset == true) {
                 clearInterval(counter);
             }
         }, duration);

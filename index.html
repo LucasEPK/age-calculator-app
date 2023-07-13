@@ -21,18 +21,31 @@
 
         <div class="label_container">
           <label class="label_items day" for="day">
-            <span class="calendar_txt">DAY</span>
-            <input class="label_input" type="number" name="date" id="day" placeholder="DD">
+            
+            <span class="calendar_txt calendar_txt-day">DAY</span>
+            <input class="label_input label_input-day" type="number" name="date" id="day" placeholder="DD">
+
+            <span class='error_msg empty-day'>This field is required</span>
+            <span class="error_msg invalid-day">Must be a valid day</span>
+            <span class="error_msg invalid-date">Must be a valid date</span>
           </label>
   
-          <label class="label_items" for="month">
-            <span class="calendar_txt">MONTH</span>
-            <input class="label_input" type="number" name="date" id="month" placeholder="MM">
+          <label class="label_items month" for="month">
+            
+            <span class="calendar_txt calendar_txt-month">MONTH</span>
+            <input class="label_input label_input-month" type="number" name="date" id="month" placeholder="MM">
+
+            <span class='error_msg empty-month'>This field is required</span>
+            <span class="error_msg invalid-month">Must be a valid month</span>
           </label>
   
           <label class="label_items year" for="year">
-            <span class="calendar_txt">YEAR</span>
-            <input class="label_input" type="number" name="date" id="year" placeholder="YYYY">
+            
+            <span class="calendar_txt calendar_txt-year">YEAR</span>
+            <input class="label_input label_input-year" type="number" name="date" id="year" placeholder="YYYY">
+
+            <span class='error_msg empty-year'>This field is required</span>
+            <span class="error_msg invalid-year">Must be in the past</span>
           </label>
         </div>
 
