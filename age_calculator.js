@@ -1,4 +1,4 @@
-function date_validation(day,month,year) {
+async function date_validation(day,month,year) {
     /*
     checks if:
 
@@ -11,12 +11,11 @@ function date_validation(day,month,year) {
     event.preventDefault(); //this makes the page not refresh
 
     //this resets the numbers in case there's an animation going on
-    let timeout = 10; //this timeout is necessary to wait for the animation to realize it has to stop (setinterval)
-    setTimeout(() => {
-        document.querySelector(".js-age-years").textContent = "--";
-        document.querySelector(".js-age-months").textContent = "--";
-        document.querySelector(".js-age-days").textContent = "--";
-    }, timeout);
+    //this timeout is necessary to wait for the animation to realize it has to stop (setinterval)
+    delay(10);
+    document.querySelector(".js-age-years").textContent = "--";
+    document.querySelector(".js-age-months").textContent = "--";
+    document.querySelector(".js-age-days").textContent = "--";
     //this resets the error messages
     document.querySelector(".empty-day").style.display = "none";
     document.querySelector(".label_input-day").style.border = "1px solid hsl(0, 0%, 86%)";
@@ -186,6 +185,15 @@ function date_validation(day,month,year) {
 
 }
 
+function delay(n) { // sync timeout
+    n = n || 2000;
+    return new Promise(done => {
+      setTimeout(() => {
+        done();
+      }, n);
+    });
+}
+
 function calculate_age(day,month,year) { //this functions receives valid day month and year submitted and outputs in the html the age
     let current_date = new Date();
 
@@ -196,35 +204,54 @@ function calculate_age(day,month,year) { //this functions receives valid day mon
     console.log('current_month'+current_month);
     console.log('current_year'+current_year);
 
-    //first we check if the birthday has passed already (if it's the birthday then we count it as if it passed)
-    let birthday_passed = false;
+    //first we check if the date has passed already (if it's the date then we count it as if it passed)
+    let date_passed = false;
 
-    if (month.value < current_month) { //birthday month passed
-        
-        birthday_passed = true;
-    } else if(month.value == current_month && day.value <= current_day){ //we are in the birthday month and we check if the day already passed or not
-        birthday_passed = true;
+    if (month.value < current_month) { //date month passed
+        console.log('month passed');
+        date_passed = true;
+    } else if(month.value == current_month && day.value <= current_day){ //we are in the date month and we check if the day already passed or not
+        console.log('day passed');
+        date_passed = true;
     }
 
     let age_years;
     let age_months;
     let age_days;
 
-    if (birthday_passed){
-        //if the birthday passed already then we subtract
-        console.log('birthday passed');
-        
+    if (date_passed){
+
+        console.log('date passed');
         age_years = current_year - year.value;
         age_months = current_month - month.value;
-        age_days = current_day - day.value;
+
+        if (current_day >= day.value) { //this is to make sure the days are calculated right based on if the current day is after the date day or before
+            age_days = current_day - day.value;
+        } else {
+            age_days = (previous_month_days(month.value)-day.value)+current_day;
+
+            age_months -= 1; //this happens when the date day hasn't passed
+        }
+
+
     } else {
-        //if the birthday didn't pass we subtract the years, subtract 1 more and the days and month are the current ones
-        console.log('birthday hasnt passed');
+        //if the date didn't pass we subtract the years, subtract 1 more, the months are 12 minus the different between date month and current month (-1 if the date day has not passed) and the days are the total days in the previous month minus the date day plus the current day
+
+        console.log('date hasnt passed');
 
         age_years = current_year - year.value;
         age_years -= 1;
-        age_months = current_month;
-        age_days = current_day;
+
+        age_months = 12-(month.value - current_month);
+
+        if (current_day >= day.value) {//this is to make sure the days are calculated right based on if the current day is after the date day or before
+            age_days = current_day - day.value;
+        } else {
+            age_days = (previous_month_days(month.value)-day.value)+current_day;
+
+            age_months -= 1; //this happens when the date day hasn't passed
+        }
+
     }
 
     console.log('age_years:'+age_years);
@@ -262,8 +289,6 @@ function print_to_html(years, months, days) {
         let i = 0;
         let duration = interval/age.value; //this makes the number complete in the interval time
 
-        console.log(duration);
-
         let counter_reset = false;
 
         let counter = setInterval(() => {
@@ -271,16 +296,55 @@ function print_to_html(years, months, days) {
             document.querySelector(".arrow_icon").addEventListener("click", function() {//this is necessary to stop the animation once the submit button has been pressed
                 counter_reset = true;
             })
-            i += 1;
             
             document.querySelector(age.selector).textContent = i; //textContent is similar to innerHtml
-    
+            
             if (i == age.value || counter_reset == true) {
                 clearInterval(counter);
             }
+            
+            i += 1;
         }, duration);
     });
 
 
+}
+
+function previous_month_days(current_month) {
+    const JANUARY = 1;
+    const FEBRUARY = 2;
+    const MARCH = 3;
+    const MAY = 5;
+    const JULY = 7;
+    const AUGUST = 8;
+    const OCTOBER = 10;
+    const DECEMBER = 0; //it's 0 because if the current month is january(1) then the previous is gonna be 0
+
+    if (current_month - 1 == JANUARY || current_month - 1 == MARCH || current_month - 1 == MAY || current_month - 1 == JULY || current_month - 1 == AUGUST || current_month - 1 == OCTOBER || current_month - 1 == DECEMBER) { //months with 31 days
+        
+        return 31;
+    } else if(current_month - 1 == FEBRUARY) { // february
+
+        if (year.value % 100 == 0) {//secular year
+            if (year.value % 4 == 0 && year.value % 400 == 0) {//leap year
+
+                return 29;
+            } else { //not a leap year
+                
+                return 28;
+            }
+        } else { //not secular year
+            if (year.value % 4 == 0) {//leap year
+                
+                return 29;
+            }else { //not a leap year
+                
+                return 28;
+            }
+        }
+    } else { //months with 30 days
+
+        return 30;
+    }
 }
     
