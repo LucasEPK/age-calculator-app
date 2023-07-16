@@ -163,3 +163,56 @@ body{
 .attribution{
     display: none;
 }
+
+@media(min-width: 800px){
+    .container{
+        width: 60vw;
+
+        padding: 50px;
+
+        gap: 0;
+
+        border-bottom-right-radius: 150px ;
+    }
+
+    .form_container{
+        gap: 0;
+    }
+
+    .arrow_icon{
+        grid-area: 1/5/2/6;
+
+        justify-self: end;
+
+        height: 70px;
+    }
+
+    .arrow_icon:hover{
+        background-color: black;
+    }
+
+    .label_items{
+        max-width: 140px;
+    }
+
+    .label_input{
+        font-size: 2rem;
+
+        padding: 8px 20px;
+
+        outline: none;
+    }
+
+    .label_input:focus{
+        border: 1px solid hsl(259, 100%, 65%); /*purple*/
+        caret-color: hsl(259, 100%, 65%);
+    }
+
+    .calendar_txt{
+        font-size: 1rem;
+    }
+
+    .calendar_txt_big{
+        font-size: 4rem;
+    }
+}

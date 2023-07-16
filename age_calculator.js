@@ -13,9 +13,9 @@ async function date_validation(day,month,year) {
     //this resets the numbers in case there's an animation going on
     //this timeout is necessary to wait for the animation to realize it has to stop (setinterval)
     delay(10);
-    document.querySelector(".js-age-years").textContent = "--";
-    document.querySelector(".js-age-months").textContent = "--";
-    document.querySelector(".js-age-days").textContent = "--";
+    document.querySelector(".js-age-years").textContent = "- -";
+    document.querySelector(".js-age-months").textContent = "- -";
+    document.querySelector(".js-age-days").textContent = "- -";
     //this resets the error messages
     document.querySelector(".empty-day").style.display = "none";
     document.querySelector(".label_input-day").style.border = "1px solid hsl(0, 0%, 86%)";
