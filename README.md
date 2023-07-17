@@ -1,22 +1,25 @@
-# Frontend Mentor - Age calculator app
+# Frontend Mentor - Age calculator app solution
 
-![Design preview for the Age calculator app coding challenge](./design/desktop-preview.jpg)
+This is a solution to the [Age calculator app challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/age-calculator-app-dF9DFFpj-Q).
 
-## Welcome! 👋
+## Table of contents
 
-Thanks for checking out this front-end coding challenge.
+- [Overview](#overview)
+  - [The challenge](#the-challenge)
+  - [Screenshot](#screenshot)
+  - [Links](#links)
+- [My process](#my-process)
+  - [Built with](#built-with)
+  - [What I learned](#what-i-learned)
+  - [Continued development](#continued-development)
+  - [Useful resources](#useful-resources)
+- [Author](#author)
 
-[Frontend Mentor](https://www.frontendmentor.io) challenges help you improve your coding skills by building realistic projects.
+## Overview
 
-**To do this challenge, you need a decent understanding of HTML, CSS and JavaScript.**
+### The challenge
 
-## The challenge
-
-Your challenge is to build out this age calculator app and get it looking as close to the design as possible.
-
-You can use any tools you like to help you complete the challenge. So if you've got something you'd like to practice, feel free to give it a go.
-
-Your users should be able to: 
+Users should be able to:
 
 - View an age in years, months, and days after submitting a valid date through the form
 - Receive validation errors if:
@@ -29,74 +32,106 @@ Your users should be able to:
 - See hover and focus states for all interactive elements on the page
 - **Bonus**: See the age numbers animate to their final number when the form is submitted
 
-Want some support on the challenge? [Join our Slack community](https://www.frontendmentor.io/slack) and ask questions in the **#help** channel.
+### Screenshot
 
-## Where to find everything
+![](screenshot.png)
 
-Your task is to build out the project to the designs inside the `/design` folder. You will find both a mobile and a desktop version of the design. 
+### Links
 
-The designs are in JPG static format. Using JPGs will mean that you'll need to use your best judgment for styles such as `font-size`, `padding` and `margin`. 
+- Live Site URL: [https://lucasepk.github.io/age-calculator-app/](https://lucasepk.github.io/age-calculator-app/)
 
-If you would like the design files (we provide Sketch & Figma versions) to inspect the design in more detail, you can [subscribe as a PRO member](https://www.frontendmentor.io/pro).
+## My process
 
-All the required assets for this project are in the `/assets` folder. The images are already exported for the correct screen size and optimized.
+### Built with
 
-We also include variable and static font files for the required fonts for this project. You can choose to either link to Google Fonts or use the local font files to host the fonts yourself. Note that we've removed the static font files for the font weights that aren't needed for this project.
+- Semantic HTML5 markup
+- CSS
+- JavaScript
+- Flexbox
+- CSS Grid
+- Mobile-first workflow
 
-There is also a `style-guide.md` file containing the information you'll need, such as color palette and fonts.
+### What I learned
 
-## Building your project
+About html I learnt about number input type.
 
-Feel free to use any workflow that you feel comfortable with. Below is a suggested process, but do not feel like you need to follow these steps:
+About CSS I learnt about importing fonts when given with ttf files, how to remove default arrows of input number, gap works on flexbox too, using italic, setting border radius of only one corner, paint the text cursor and overall got a lot better with flexbox.
 
-1. Initialize your project as a public repository on [GitHub](https://github.com/). Creating a repo will make it easier to share your code with the community if you need help. If you're not sure how to do this, [have a read-through of this Try Git resource](https://try.github.io/).
-2. Configure your repository to publish your code to a web address. This will also be useful if you need some help during a challenge as you can share the URL for your project with your repo URL. There are a number of ways to do this, and we provide some recommendations below.
-3. Look through the designs to start planning out how you'll tackle the project. This step is crucial to help you think ahead for CSS classes to create reusable styles.
-4. Before adding any styles, structure your content with HTML. Writing your HTML first can help focus your attention on creating well-structured content.
-5. Write out the base styles for your project, including general content styles, such as `font-family` and `font-size`.
-6. Start adding styles to the top of the page and work down. Only move on to the next section once you're happy you've completed the area you're working on.
+About JavaScript I learnt to get the current date, settimeout and setinterval, textcontent property, objects, addeventlistener property and synchronous delay
+```js
+function print_to_html(years, months, days) {
+    //here we take the age as parameters and output it to the html with an animation 
 
-## Deploying your project
+    //this objects and the array are created to make code more compact
+    let years_obj = {
+        selector: ".js-age-years",
+        value: years
+    };
 
-As mentioned above, there are many ways to host your project for free. Our recommend hosts are:
+    let months_obj = {
+        selector: ".js-age-months",
+        value: months
+    }
+    
+    let days_obj = {
+        selector: ".js-age-days",
+        value: days
+    }
+    let ages = [years_obj, months_obj, days_obj];
 
-- [GitHub Pages](https://pages.github.com/)
-- [Vercel](https://vercel.com/)
-- [Netlify](https://www.netlify.com/)
+    let interval = 1000;
 
-You can host your site using one of these solutions or any of our other trusted providers. [Read more about our recommended and trusted hosts](https://medium.com/frontend-mentor/frontend-mentor-trusted-hosting-providers-bf000dfebe).
+    ages.forEach(age => {
+        //for each age parameter (years, months,days) we display the numbers going up in an animation till it reaches the proper number using setinterval function
 
-## Create a custom `README.md`
+        let i = 0;
+        let duration = interval/age.value; //this makes the number complete in the interval time
 
-We strongly recommend overwriting this `README.md` with a custom one. We've provided a template inside the [`README-template.md`](./README-template.md) file in this starter code.
+        let counter_reset = false;
 
-The template provides a guide for what to add. A custom `README` will help you explain your project and reflect on your learnings. Please feel free to edit our template as much as you like.
+        let counter = setInterval(() => {
+            
+            document.querySelector(".arrow_icon").addEventListener("click", function() {//this is necessary to stop the animation once the submit button has been pressed
+                counter_reset = true;
+            })
+            
+            document.querySelector(age.selector).textContent = i; //textContent is similar to innerHtml
+            
+            if (i == age.value || counter_reset == true) {
+                clearInterval(counter);
+            }
+            
+            i += 1;
+        }, duration);
+    });
 
-Once you've added your information to the template, delete this file and rename the `README-template.md` file to `README.md`. That will make it show up as your repository's README file.
 
-## Submitting your solution
+}
+```
 
-Submit your solution on the platform for the rest of the community to see. Follow our ["Complete guide to submitting solutions"](https://medium.com/frontend-mentor/a-complete-guide-to-submitting-solutions-on-frontend-mentor-ac6384162248) for tips on how to do this.
+### Continued development
 
-Remember, if you're looking for feedback on your solution, be sure to ask questions when submitting it. The more specific and detailed you are with your questions, the higher the chance you'll get valuable feedback from the community.
+I would like to get more comfortable with JavaScript and get better at naming classes in the html.
 
-## Sharing your solution
+### Useful resources
 
-There are multiple places you can share your solution:
+- [https://fedmentor.dev/posts/selectors-in-js/](https://fedmentor.dev/posts/selectors-in-js/) - This explains how to use classes to manipulate the DOM using JS
+- [https://www.w3schools.com/html/html_form_input_types.asp](https://www.w3schools.com/html/html_form_input_types.asp) - explanation of input types, including number
+- [https://www.w3schools.com/html/html_form_attributes.asp](https://www.w3schools.com/html/html_form_attributes.asp) - list of all useful attributes of html inputs
+- [https://es.wikipedia.org/wiki/A%C3%B1o_bisiesto](https://es.wikipedia.org/wiki/A%C3%B1o_bisiesto) - explanation on how to calculate leap year, sorry if it's in spanish but the english wikipedia didn't have the explanation
+- [https://www.scaler.com/topics/get-current-date-in-javascript/](https://www.scaler.com/topics/get-current-date-in-javascript/) - how to get current date with JavaScript
+- [https://www.sitepoint.com/delay-sleep-pause-wait/](https://www.sitepoint.com/delay-sleep-pause-wait/) - what to use to set a delay
+- [https://stackoverflow.com/questions/5226285/settimeout-in-for-loop-does-not-print-consecutive-values](https://stackoverflow.com/questions/5226285/settimeout-in-for-loop-does-not-print-consecutive-values) - explanation of how to use settimeout
+- [https://www.youtube.com/watch?v=FaMW-CtExrs](https://www.youtube.com/watch?v=FaMW-CtExrs) - Really good youtube video on how to make number going up animation
+- [https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent](https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent) - textcontent attribute explanation
+- [https://www.w3schools.com/js/js_object_definition.asp](https://www.w3schools.com/js/js_object_definition.asp) - explanation of javascript objects
+- [https://www.geeksforgeeks.org/how-to-include-a-font-ttf-using-css/](https://www.geeksforgeeks.org/how-to-include-a-font-ttf-using-css/) - explanation on how to use ttf fonts in css
+- [https://stackoverflow.com/questions/28279989/multiple-font-weights-one-font-face-query](https://stackoverflow.com/questions/28279989/multiple-font-weights-one-font-face-query) - explanation of how to make multiple font weights and style with font face query
+- [https://www.w3schools.com/howto/howto_css_hide_arrow_number.asp](https://www.w3schools.com/howto/howto_css_hide_arrow_number.asp) - how to remove default arrows from number input
+- [https://www.geeksforgeeks.org/how-to-check-a-button-is-clicked-or-not-in-javascript/](https://www.geeksforgeeks.org/how-to-check-a-button-is-clicked-or-not-in-javascript/) - explanation of how to check if a button was clicked in javascript
+- [https://blog.praveen.science/right-way-of-delaying-execution-synchronously-in-javascript-without-using-loops-or-timeouts/](https://blog.praveen.science/right-way-of-delaying-execution-synchronously-in-javascript-without-using-loops-or-timeouts/) - explanation of how to delay synchronously
+- [https://stackoverflow.com/questions/6921895/synchronous-delay-in-code-execution](https://stackoverflow.com/questions/6921895/synchronous-delay-in-code-execution) - another explanation of how to delay synchronously
 
-1. Share your solution page in the **#finished-projects** channel of the [Slack community](https://www.frontendmentor.io/slack). 
-2. Tweet [@frontendmentor](https://twitter.com/frontendmentor) and mention **@frontendmentor**, including the repo and live URLs in the tweet. We'd love to take a look at what you've built and help share it around.
-3. Share your solution on other social channels like LinkedIn.
-4. Blog about your experience building your project. Writing about your workflow, technical choices, and talking through your code is a brilliant way to reinforce what you've learned. Great platforms to write on are [dev.to](https://dev.to/), [Hashnode](https://hashnode.com/), and [CodeNewbie](https://community.codenewbie.org/).
+## Author
 
-We provide templates to help you share your solution once you've submitted it on the platform. Please do edit them and include specific questions when you're looking for feedback. 
-
-The more specific you are with your questions the more likely it is that another member of the community will give you feedback.
-
-## Got feedback for us?
-
-We love receiving feedback! We're always looking to improve our challenges and our platform. So if you have anything you'd like to mention, please email hi[at]frontendmentor[dot]io.
-
-This challenge is completely free. Please share it with anyone who will find it useful for practice.
-
-**Have fun building!** 🚀
+- Frontend Mentor - [@LucasEPK](https://www.frontendmentor.io/profile/LucasEPK)
